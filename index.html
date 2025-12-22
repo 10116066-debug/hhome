@@ -1,264 +1,331 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>FORGEX HUB — Clientes Eaglercraft</title>
+<title>FORGEX HUB — Launcher</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-:root{--bg:#000;--card:#0f0f0f;--acc:#00ff9d;--text:#e0e0e0;--muted:#888}
+:root{
+  --bg:#0b0f1a;
+  --sidebar:#0f152b;
+  --panel:#141c3a;
+  --card:#1a2450;
+  --acc:#5b8cff;
+  --acc2:#7a5cff;
+  --text:#e8ecf7;
+  --muted:#9aa4c7
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
-header{position:sticky;top:0;background:rgba(0,0,0,.9);border-bottom:1px solid #111;z-index:10}
-.nav{max-width:1300px;margin:auto;padding:20px;display:flex;align-items:center}
-.logo{
-  width:56px;height:56px;border-radius:16px;
-  background:#000;display:grid;place-items:center;
-  pointer-events:none
+body{
+  margin:0;
+  font-family:system-ui;
+  background:linear-gradient(180deg,#070a14,#0b0f1a);
+  color:var(--text)
 }
-.logo img{
-  width:100%;height:100%;
-  object-fit:contain;
-  user-select:none;
-  -webkit-user-drag:none
-}
-.title{font-size:2.4rem;font-weight:900;margin-left:16px}
-main{max-width:1300px;margin:40px auto;padding:0 20px}
-h2{text-align:center;font-size:2.8rem;margin:70px 0 30px}
-
-.intro{
-  max-width:900px;
-  margin:40px auto 80px;
-  text-align:center;
-  font-size:1.15rem;
-  line-height:1.8;
-  color:#cfcfcf
-}
-.intro-toggle{
-  width:100%;
+header{
+  height:90px;
   display:flex;
-  justify-content:center;
-  margin-bottom:16px
+  align-items:center;
+  gap:18px;
+  padding:0 28px;
+  background:rgba(10,13,30,.95);
+  border-bottom:1px solid #1f2a55
 }
-.toggle-btn{
-  background:#111;
-  border:2px solid var(--acc);
-  color:var(--acc);
-  padding:8px 18px;
-  border-radius:999px;
+header img{
+  width:52px;height:52px;border-radius:14px;
+  cursor:pointer
+}
+header h1{margin:0;font-size:2.2rem;font-weight:900}
+
+main{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:calc(100vh - 90px)
+}
+
+aside{
+  background:var(--sidebar);
+  border-right:1px solid #1f2a55;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px
+}
+.side-btn{
+  padding:14px;
+  border-radius:14px;
   font-weight:900;
   cursor:pointer;
-  user-select:none
+  background:#141c3a;
+  color:var(--muted);
+  transition:.2s
 }
-.intro.collapsed p{display:none}
+.side-btn:hover,.side-btn.active{
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#fff
+}
 
-.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+section{
+  padding:34px;
+  display:none
+}
+section.active{display:block}
+h2{font-size:2.4rem;margin:10px 0 26px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:22px
+}
 .card{
-  background:var(--card);
-  border:1px solid #111;
-  padding:24px;
-  border-radius:20px;
+  background:linear-gradient(180deg,var(--card),#121733);
+  border:1px solid #24306a;
+  border-radius:22px;
+  padding:26px;
   text-align:center;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:14px;
   transition:.25s
 }
-.card:hover{transform:translateY(-6px)}
-.card-title{font-size:1.6rem;font-weight:900}
-.btn{padding:12px;border-radius:14px;font-weight:900;cursor:pointer;user-select:none}
-.info-btn{background:#111;border:2px solid var(--acc);color:var(--acc)}
-.play-btn{background:var(--acc);color:#000}
-footer{text-align:center;padding:40px;color:var(--muted)}
+.card:hover{transform:translateY(-8px)}
+.card-title{font-size:1.5rem;font-weight:900}
 
-#infoModal,#imgModal,#features-modal,#playModal{
-  position:fixed;inset:0;background:rgba(0,0,0,.9);
-  display:none;align-items:center;justify-content:center;z-index:9999
+.btn{
+  padding:13px;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer
 }
-.modal-box{
-  background:var(--card);
+.info-btn{
+  background:#121733;
   border:2px solid var(--acc);
-  border-radius:20px;
-  padding:30px;
+  color:var(--acc)
+}
+.play-btn{
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#fff
+}
+
+#infoModal,#imgModal{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999
+}
+.modal{
+  background:var(--panel);
+  border:2px solid var(--acc);
+  border-radius:22px;
+  padding:28px;
   max-width:520px;
   text-align:center
 }
-.modal-box img{width:100%;max-height:180px;object-fit:contain;margin-bottom:12px}
-.close{margin-top:20px;background:#333;color:#fff;padding:10px;border-radius:12px;cursor:pointer;font-weight:900}
-.fullscreen{max-width:95%;max-height:95%}
-.close-x{position:absolute;top:20px;right:30px;font-size:2.5rem;font-weight:900;cursor:pointer;color:#fff}
+.modal img{
+  width:100%;
+  max-height:200px;
+  object-fit:contain;
+  margin-bottom:12px
+}
+.close{
+  margin-top:18px;
+  background:#1c2340;
+  padding:10px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer
+}
+.close-x{
+  position:absolute;
+  top:20px;right:30px;
+  font-size:2.5rem;
+  font-weight:900;
+  cursor:pointer
+}
+.full{max-width:95%;max-height:95%}
 </style>
 </head>
+
 <body>
 
-<div id="features-modal">
-  <div class="modal-box">
-    <h2>BIENVENIDO A FORGEX HUB</h2>
-    <p>
-      Este sitio reúne clientes vanilla sin modificaciones, clientes con funciones avanzadas
-      y opciones con hacks optimizados para distintos estilos de juego.<br><br>
-      Usa <b>Ver imagen / info</b> para conocer cada cliente antes de jugar.
-    </p>
-    <div class="btn play-btn" onclick="acceptFeatures()">Continuar</div>
-  </div>
-</div>
-
 <header>
-  <div class="nav">
-    <div class="logo">
-      <img src="https://i.imgur.com/BBhBqWF.png" draggable="false">
-    </div>
-    <div class="title">FORGEX HUB</div>
-  </div>
+  <img src="https://i.imgur.com/BBhBqWF.png" onclick="toggleMenu()">
+  <h1>FORGEX HUB</h1>
 </header>
 
 <main>
 
-<section class="intro" id="introSection">
-  <div class="intro-toggle">
-    <div class="toggle-btn" onclick="toggleIntro()">− Minimizar texto</div>
-  </div>
+<aside>
+  <div class="side-btn active" onclick="openTab('welcome',this)">Inicio</div>
+  <div class="side-btn" onclick="openTab('new',this)">Nuevos</div>
+  <div class="side-btn" onclick="openTab('used',this)">Más usados</div>
+  <div class="side-btn" onclick="openTab('rare',this)">Hacks poco comunes</div>
+  <div class="side-btn" onclick="openTab('normal',this)">Clientes Raros</div>
+</aside>
 
-  <h2>¿POR QUÉ PREFERIR FORGEX HUB?</h2>
-  <p>
-    FORGEX HUB está diseñado para reunir, organizar y presentar de forma clara
-    los clientes Eaglercraft más relevantes disponibles actualmente.<br><br>
+<section id="welcome" class="active">
+<h2>¿POR QUÉ PREFERIR FORGEX HUB?</h2>
+<p style="max-width:900px;line-height:1.8;color:#cfd6ff"><br><br>
+FORGEX HUB reúne los mejores clientes Eaglercraft seleccionados por rendimiento, estabilidad y funcionalidad real. Cada cliente incluye imágenes, descripciones y atajos de teclado, para que sepas exactamente qué esperar antes de jugar.
 
-    Aquí encontrarás desde clientes completamente vanilla, pensados para quienes
-    buscan estabilidad y compatibilidad, hasta clientes avanzados con sistemas de
-    hacks optimizados y bien estructurados.<br><br>
+Cómo funcionan
 
-    Cada cliente incluido cumple un propósito real: rendimiento, experimentación,
-    versiones modernas o funcionalidades específicas. No se agregan clientes al azar,
-    solo aquellos que aportan valor real.<br><br>
+SHIFT: abre menús y funciones ocultas.
 
-    Además, puedes revisar información previa, imágenes y advertencias antes de jugar,
-    evitando sorpresas innecesarias al entrar a un servidor o mundo.
-  </p>
+Flechas: mover menús dentro del cliente.
+
+Teclas personalizadas: indicadas en “Ver imagen / info” según cada cliente.
+
+Clientes destacados
+
+UwUClient: estable y moderno.
+
+DragonX: fluido en 1.8.x.
+
+PixelClient 1.8.9 y EaglerForge 1.8.9: ideales para mods y personalización.
+
+Por qué elegirnos
+
+Seguridad y estabilidad garantizadas.
+
+Optimización para cada versión.
+
+Información completa antes de jugar.
+
+Nuevos clientes agregados según la comunidad.
+
+FORGEX HUB es ideal tanto para principiantes como para jugadores avanzados que buscan rendimiento y funcionalidad real.
+</p>
 </section>
 
-<h2>LOS MÁS USADOS</h2>
-<div class="grid">
-  <div class="card">
-    <div class="card-title">UwUClient</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/NR1xeZ5.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('UwUClient','https://eaglerhacks.github.io/UwUClient%20v1%20Full.html')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">DragonX</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/rpfY3s9.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('DragonX','https://eaglerhacks.github.io/dragonv4.html')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">WurstX</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/hx829M9.png','Presiona SHIFT para abrir el menú')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('WurstX','https://eaglerhacks.github.io/wurstX.html')">Jugar</div>
-  </div>
-</div>
-
-<h2>HACKS POCO COMUNES</h2>
-<div class="grid">
-  <div class="card">
-    <div class="card-title">Shadow Client</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/kbtZu3I.png','Cliente normal 1.8.9')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('Shadow Client','https://eaglerhacks.github.io/Shadow_Client_2.5_1.8.8_International.html')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Flame 3.7</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/bHTf42R.png','Cliente normal 1.8.9')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('Flame 3.7','https://eaglerhacks.github.io/flameclient%203.7.html')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">PixelClient 1.8.9</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Xvf8iKN.png','Cliente vanilla 1.8.9')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('PixelClient 1.8.9','https://eaglercraft.ir/es/play/pc1.8.8?touch=false')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">EaglerForge 1.8.9</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Wzyh9A9.png','Sirve para agregar mods')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('EaglerForge 1.8.9','https://eaglercraft.ir/es/play/eaglerforge-1.8.8?touch=false')">Jugar</div>
-  </div>
-</div>
-
-<h2>CLIENTES NORMALES</h2>
-<div class="grid">
-  <div class="card">
-    <div class="card-title">PiClient</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/oNTUlrQ.png','Mover menú con flechas')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('PiClient','https://eaglerhacks.github.io/PiClient.html')">Jugar</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Justin 1.2.4</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/ivPQB2d.png','Mover menú con flechas')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('Justin 1.2.4','https://eaglerhacks.github.io/justinclient.html')">Jugar</div>
-  </div>
-</div>
-
-<h2 id="advanced">VERSIONES AVANZADAS Y OPTIMIZADAS</h2>
+<section id="new">
+<h2>Nuevos</h2>
 <div class="grid">
   <div class="card">
     <div class="card-title">Tuff Client 1.12.2</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/jZOmpwr.png','Funciones modernas')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('Tuff Client 1.12.2','https://tuff.speedslicer.dev/files/1_1UT8/JS/')">Jugar</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/jZOmpwr.png','Este cliente hace que puedas ver armadura de netherita y otras cosas como totem elytras entre otras cosas,cosas que no deja aser eaglercraft normal')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://tuff.speedslicer.dev/files/1_1UT8/JS/','_blank')">Jugar</div>
   </div>
   <div class="card">
     <div class="card-title">EaglyMC 1.20</div>
-    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/gWHU7rd.png','Shaders y optimización')">Ver imagen / info</div>
-    <div class="btn play-btn" onclick="askPlay('EaglyMC 1.20','https://eaglercraft.ir/es/play/eagly-1.20?touch=false')">Jugar</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/gWHU7rd.png','Esta version de eaglercraft o conocida como eaglymc ofrece jugar en la version 1.20 para poder experimentar el Single-player ya que no se puede jugar servidores en linea,no es ningun cliente solo una version de eaglercraft mas nueva como otras')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglercraft.ir/es/play/eagly-1.20?touch=false','_blank')">Jugar</div>
   </div>
 </div>
+</section>
+
+<section id="used">
+<h2>Los más usados</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">UwUClient</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/NR1xeZ5.png','Este Cliente Hackeado de eaglercraft ofrece muchas opciones como otros pero este aun tiene mejores es un poco comfusa pero con practica aprendes a utilizarlo,no se recomienda utilizarlo en archlol entre otros parecidos ya que puede causar ban permanente')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/UwUClient%20v1%20Full.html','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">DragonX</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/rpfY3s9.png','Este cliente hackeado ofrece muchas  opciones que otros menos riesgo de ban(no estoy diciendo que lo ocupen en servidores muy conocidos porque seran baneados)este ofrece muchas opciones entre la mas destacada es duper que permite multiplicar items que tienes en la mano (ojo que esto solo funciona en servidores no comunes) tambien ofrece otras como crash server que permite crashear un servidor no recomendable para servidores como aderrall ya que te costara ingresar despues de un tiempo')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/dragonv4.html','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">WurstX</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/hx829M9.png','este cliente hackeado es uno de los mejores ya que puedes encender y apagar algunas funciones solo tocando las teclas algo que muchos no pueden aser algunos ejemplos para las teclas pueden ser como la X que te permite tener x-ray, f que permite tenes vision nocturna o conocido como fullbrill, entre otras mas como r que permite kill aura o m que es para multi aura')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/wurstX.html','_blank')">Jugar</div>
+  </div>
+</div>
+</section>
+
+<section id="rare">
+<h2>Hacks poco comunes</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Shadow Client</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/kbtZu3I.png','Este es un cliente normal ya si quieres jugar legal este es uno de los clientes mas comunes por la comunidad ya que ofrece tener todas las funciones activas solo con ingresar al cliente,no tiene ninguna tecla en espesifica ya que no contiene menu')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/Shadow_Client_2.5_1.8.8_International.html','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Flame 3.7</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/bHTf42R.png','flame client es uno de los mejores sin duda alguna ya que es el que mas utilizo para jugar legalmente ya que optiene muchas opciones y es super bueno')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/flameclient%203.7.html','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">PixelClient 1.8.9</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Xvf8iKN.png','pixelclient es otro cliente normal que ofrece aun muchas mas opciones que otros clientes y permite tener opciones para bedwars funciones como tnt timer que si no lo conoces es para ver en que tiempo explotara la tnt ya que sirve mucho para estratejias como para omitir los puentes')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglercraft.ir/es/play/pc1.8.8?touch=false','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">EaglerForge 1.8.9</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/Wzyh9A9.png','eaglerforge sin duda es uno de los mejores eaglercraft para utilizar mods y jugar ya en singleplayer o multiplayer para que los mods funcionen en multiplayer se recomienda utilizar servidores no comunes ya que permiten usar hacks y mods ')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglercraft.ir/es/play/eaglerforge-1.8.8?touch=false','_blank')">Jugar</div>
+  </div>
+</div>
+</section>
+
+<section id="normal">
+<h2>Clientes Raros</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">PiClient</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/oNTUlrQ.png','piclient se encuentra en la lista de clientes raros ya que para mover el menu se requiere de las teclas ↑ ↓ ← → para poder moverlo,este cliente es algo raro ya q algunas funciones no sirven o estan bloqueadas permanentemente pero sigue siendo bueno')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/PiClient.html','_blank')">Jugar</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Justin 1.2.4</div>
+    <div class="btn info-btn" onclick="openInfo('https://i.imgur.com/ivPQB2d.png','justin se encuentra en la lista de raros ya que tambien se nesesita de las teclas ↑ ↓ ← → para controlarlo y algunas funciones no sirven pero aun sigue siendo un cliente bueno')">Ver imagen / info</div>
+    <div class="btn play-btn" onclick="window.open('https://eaglerhacks.github.io/justinclient.html','_blank')">Jugar</div>
+  </div>
+</div>
+</section>
 
 </main>
 
-<footer>FORGEX HUB © 2025</footer>
-
 <div id="infoModal">
-  <div class="modal-box">
+  <div class="modal">
     <img id="infoImg">
     <p id="infoText"></p>
-    <div class="btn info-btn" onclick="openImg()">Ver imagen completa</div>
+    <div class="btn info-btn" onclick="showImg()">Ver imagen completa</div>
     <div class="close" onclick="closeInfo()">Cerrar</div>
   </div>
 </div>
 
 <div id="imgModal">
   <div class="close-x" onclick="closeImg()">×</div>
-  <img id="fullImg" class="fullscreen">
-</div>
-
-<div id="playModal">
-  <div class="modal-box">
-    <h2>ANTES DE CONTINUAR</h2>
-    <p>
-      Antes de seguir, puedes revisar los clientes más avanzados y optimizados.
-    </p>
-    <div class="btn info-btn" onclick="goAdvanced()">Ver</div>
-    <div class="btn play-btn" id="continueBtn">Seguir</div>
-    <div class="close" onclick="closePlay()">Cancelar</div>
-  </div>
+  <img id="fullImg" class="full">
 </div>
 
 <script>
-let currentImg='',nextUrl='';
-function openInfo(img,text){currentImg=img;infoImg.src=img;infoText.innerText=text;infoModal.style.display='flex'}
-function closeInfo(){infoModal.style.display='none'}
-function openImg(){fullImg.src=currentImg;imgModal.style.display='flex'}
-function closeImg(){imgModal.style.display='none'}
-function askPlay(name,url){nextUrl=url;continueBtn.innerText='Seguir con '+name;playModal.style.display='flex'}
-function closePlay(){playModal.style.display='none'}
-function goAdvanced(){closePlay();document.getElementById('advanced').scrollIntoView({behavior:'smooth'})}
-continueBtn.onclick=()=>window.open(nextUrl,'_blank');
-function acceptFeatures(){localStorage.setItem('forgex_features','1');document.getElementById('features-modal').style.display='none'}
-if(!localStorage.getItem('forgex_features')){document.getElementById('features-modal').style.display='flex'}
-function toggleIntro(){
-  const intro=document.getElementById('introSection');
-  const btn=intro.querySelector('.toggle-btn');
-  intro.classList.toggle('collapsed');
-  btn.innerText=intro.classList.contains('collapsed')
-    ? '+ Mostrar texto'
-    : '− Minimizar texto';
+let img='';
+let sidebarVisible=true;
+
+function openTab(id,el){
+  if(el.classList.contains('active')){
+    toggleMenu();
+    return;
+  }
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
 }
+
+function toggleMenu(){
+  sidebarVisible=!sidebarVisible;
+  document.querySelector('aside').style.display=sidebarVisible?'flex':'none';
+  document.querySelector('main').style.gridTemplateColumns=sidebarVisible?'260px 1fr':'1fr';
+}
+
+function openInfo(i,t){
+  img=i;
+  infoImg.src=i;
+  infoText.innerText=t;
+  infoModal.style.display='flex';
+}
+function closeInfo(){infoModal.style.display='none'}
+function showImg(){fullImg.src=img;imgModal.style.display='flex'}
+function closeImg(){imgModal.style.display='none'}
 </script>
 
 </body>
-</html
+</html>
