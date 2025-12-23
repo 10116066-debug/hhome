@@ -1,56 +1,369 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FORGEX HUB</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGEX HUB — Acceso de Seguridad</title>
+<style>
+    :root {
+        --bg: #050810;
+        --acc: #5b8cff;
+        --acc2: #7a5cff;
+        --white: #ffffff;
+    }
 
-        body, html {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .full-screen-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-    </style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: black;
+        background-image: radial-gradient(circle at center, #1a2450 0%, #050810 100%);
+        color: var(--white);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* CANVAS DE PARTÍCULAS */
+    #particleCanvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 700px;
+        padding: 45px;
+        background: rgba(10, 15, 30, 0.85);
+        border-radius: 35px;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+        animation: entrance 1.2s cubic-bezier(0.17, 0.85, 0.32, 1.2);
+    }
+
+    @keyframes entrance {
+        from { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+        to { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
+
+    .logo-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 30px;
+        border: 3px solid var(--white);
+        margin-bottom: 25px;
+        object-fit: cover;
+        animation: logoFloat 3s ease-in-out infinite, logoGlow 2s infinite alternate;
+        cursor: pointer;
+    }
+
+    @keyframes logoFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes logoGlow {
+        from { box-shadow: 0 0 20px rgba(91, 140, 255, 0.2); }
+        to { box-shadow: 0 0 45px rgba(91, 140, 255, 0.6), 0 0 10px #fff; }
+    }
+
+    h1 {
+        font-size: 2.8rem;
+        letter-spacing: 8px;
+        margin-bottom: 20px;
+        text-shadow: 0 0 20px var(--acc);
+        font-weight: 900;
+        animation: glitch 4s infinite;
+    }
+
+    @keyframes glitch {
+        0% { transform: skew(0); }
+        2% { transform: skew(-10deg); color: var(--acc2); }
+        4% { transform: skew(10deg); color: var(--acc); }
+        6% { transform: skew(0); }
+        100% { transform: skew(0); }
+    }
+
+    .info-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #d1d1d1;
+        margin-bottom: 20px;
+        text-align: justify;
+        background: linear-gradient(90deg, #d1d1d1, #fff, #d1d1d1);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        animation: shine 5s linear infinite;
+    }
+
+    @keyframes shine { to { background-position: 200% center; } }
+
+    .spam-alert {
+        background: rgba(255, 77, 77, 0.08);
+        border: 1px solid rgba(255, 77, 77, 0.3);
+        padding: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 0.85rem;
+        border-radius: 12px;
+        color: #ff8e8e;
+    }
+
+    #rulesSection {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(91, 140, 255, 0.3);
+        margin-bottom: 10px;
+    }
+
+    .check-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: left;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-seguir {
+        margin-top: 15px;
+        padding: 12px 45px;
+        background: var(--acc);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        text-transform: uppercase;
+        box-shadow: 0 0 10px var(--acc);
+        animation: pulseBtn 2s infinite;
+    }
+
+    @keyframes pulseBtn {
+        0%, 100% { box-shadow: 0 0 10px var(--acc); }
+        50% { box-shadow: 0 0 25px var(--acc); }
+    }
+
+    .btn-seguir:disabled { background: #444; cursor: not-allowed; animation: none; box-shadow: none; }
+
+    .loader-container {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .spinner {
+        width: 70px;
+        height: 70px;
+        border: 6px double rgba(255, 255, 255, 0.1);
+        border-top: 6px solid var(--acc);
+        border-bottom: 6px solid var(--acc2);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-msg {
+        font-weight: 900;
+        color: var(--acc);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        animation: pulseText 1s infinite alternate;
+        min-height: 20px;
+    }
+
+    @keyframes pulseText { from { opacity: 0.5; } to { opacity: 1; } }
+
+    .btn-entrar {
+        display: none;
+        padding: 20px 80px;
+        font-size: 2rem;
+        font-weight: 900;
+        color: #000;
+        background: #fff;
+        border-radius: 20px;
+        text-decoration: none;
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
+        transition: 0.3s;
+    }
+
+    .btn-entrar:hover { transform: scale(1.1); box-shadow: 0 0 80px #fff; }
+
+    .hidden { display: none !important; }
+
+    @media(max-width:768px){
+        .container { padding: 25px; border-radius: 20px; }
+        h1 { font-size: 2rem; letter-spacing: 5px; }
+        .info-text { font-size: 0.85rem; }
+        .btn-entrar { font-size: 1.5rem; padding: 15px 60px; }
+    }
+</style>
 </head>
-<body onclick="playMusic()">
+<body>
 
-    <img src="https://i.imgur.com/GNy1dYQ.png" class="full-screen-img" alt="Background">
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+<canvas id="particleCanvas"></canvas>
 
-    <script>
-        const music = document.getElementById('bgMusic');
-        let started = false;
+<div class="container">
+    <img src="https://i.imgur.com/BBhBqWF.png" class="logo-img" alt="Logo" title="Haz clic para más info">
+    <h1>FORGEX HUB</h1>
 
-        function playMusic() {
-            if (!started) {
-                // Adelanta a los 180 segundos (3 minutos)
-                music.currentTime = 180; 
-                music.play().catch(e => console.log("Interacción requerida"));
-                started = true;
-            }
-        }
+    <p class="info-text">
+        El sitio al que quieres entrar se encuentra redirigido a una nueva página web para facilitar la búsqueda y mejorar el rendimiento. Hemos actualizado la página para que puedan encontrar todo el contenido organizado por secciones. Además, ahora podrán enviar comentarios sobre el sitio para informar sobre errores o sugerencias ingresando su nombre y mensaje.
+    </p>
 
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "ArrowRight") {
-                music.currentTime += 10;
-            }
-            if (event.key === "ArrowLeft") {
-                music.currentTime -= 10;
-            }
+    <div class="spam-alert">
+        <strong>RESTRICCIONES DE SEGURIDAD:</strong> 
+        Máximo 3 comentarios diarios por IP ya que puede ser que alguien intente hacer spam al correo. El nombre de usuario no podrá cambiarse por 2 días para prevenir el mal uso.
+    </div>
+
+    <div id="rulesSection">
+        <label class="check-container">
+            <input type="checkbox" id="agreeCheck">
+            <span>He leído las reglas y prometo ser consciente con lo que envío para informar sobre bugs, errores o agregar cosas.</span>
+        </label>
+        <button id="btnSeguir" class="btn-seguir" disabled>CONTINUAR</button>
+    </div>
+
+    <div id="loaderArea" class="loader-container">
+        <div class="spinner"></div>
+        <p class="status-msg" id="statusLabel"></p>
+    </div>
+
+    <a href="https://forgex-hub.vercel.app/" id="enterBtn" class="btn-entrar">ENTRAR</a>
+</div>
+
+<script>
+    const music = document.getElementById('bgMusic');
+    const agreeCheck = document.getElementById('agreeCheck');
+    const btnSeguir = document.getElementById('btnSeguir');
+    const rulesSection = document.getElementById('rulesSection');
+    const loaderArea = document.getElementById('loaderArea');
+    const statusLabel = document.getElementById('statusLabel');
+    const enterBtn = document.getElementById('enterBtn');
+
+    // Partículas de fondo
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for(let i=0;i<100;i++){
+        particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5});
+    }
+    function animateParticles(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p=>{
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(91,140,255,0.3)';
+            ctx.fill();
+            p.x+=p.dx; p.y+=p.dy;
+            if(p.x>canvas.width) p.x=0;
+            if(p.x<0) p.x=canvas.width;
+            if(p.y>canvas.height) p.y=0;
+            if(p.y<0) p.y=canvas.height;
         });
-    </script>
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Guardar estado de aceptación
+    if(localStorage.getItem('agreed') === 'true'){
+        btnSeguir.disabled = false;
+        agreeCheck.checked = true;
+    }
+
+    agreeCheck.addEventListener('change', () => {
+        btnSeguir.disabled = !agreeCheck.checked;
+        if(agreeCheck.checked){
+            const audio = new Audio('https://www.soundjay.com/button/beep-07.mp3');
+            audio.play();
+        }
+    });
+
+    btnSeguir.addEventListener('click', () => {
+        localStorage.setItem('agreed', 'true');
+        music.currentTime = 0;
+        music.play();
+
+        rulesSection.classList.add('hidden');
+        loaderArea.style.display = 'flex';
+
+        const mensajes = [
+            "Conectando servidor...",
+            "Encriptando túnel...",
+            "Sincronizando secciones...",
+            "Verificando Anti-Spam...",
+            "Validando integridad...",
+            "Generando acceso...",
+            "¡ACCESO AUTORIZADO!"
+        ];
+
+        let i = 0;
+        const interval = setInterval(() => {
+            if(i < mensajes.length){
+                statusLabel.innerHTML = '';
+                let msg = mensajes[i];
+                let j = 0;
+                const typing = setInterval(() => {
+                    if(j<msg.length){
+                        statusLabel.innerHTML += msg[j];
+                        j++;
+                    } else clearInterval(typing);
+                }, 50);
+                i++;
+            }
+        }, 1600);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            loaderArea.classList.add('hidden'); 
+            enterBtn.style.display = 'inline-block'; 
+            lanzarConfeti();
+        }, 12000);
+    });
+
+    // Confeti al acceso autorizado
+    function lanzarConfeti(){
+        const confetiColors = ['#5b8cff','#7a5cff','#fff','#0ff','#f0f'];
+        for(let i=0;i<150;i++){
+            const conf = document.createElement('div');
+            conf.style.position='absolute';
+            conf.style.width='8px';
+            conf.style.height='8px';
+            conf.style.background=confetiColors[Math.floor(Math.random()*confetiColors.length)];
+            conf.style.top='0px';
+            conf.style.left=Math.random()*window.innerWidth+'px';
+            conf.style.opacity=0.8;
+            conf.style.borderRadius='50%';
+            conf.style.pointerEvents='none';
+            document.body.appendChild(conf);
+            let top=0;
+            const fall = setInterval(()=>{
+                top+=Math.random()*5+2;
+                conf.style.top=top+'px';
+                if(top>window.innerHeight){ clearInterval(fall); conf.remove(); }
+            },16);
+        }
+    }
+</script>
 </body>
 </html>
